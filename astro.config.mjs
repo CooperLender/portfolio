@@ -1,6 +1,7 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: 'https://cooperlender.github.io',
-  base: '/portfolio',
+  site: "https://cooperlender.github.io",
+  base: "/portfolio",
+  trailingSlash: "always",
 });

@@ -1,16 +1,11 @@
 ---
 import "../styles/global.css";
+const { title = "Portfolio", lang = "en" } = Astro.props;
 
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-
-const {
-  title = "Portfolio",
-  lang = "en",
-  homeHref = base,
-  enHref = `${base}en/`,
-  jaHref = `${base}ja/`,
-} = Astro.props;
+const base = import.meta.env.BASE_URL; // with trailingSlash:"always" => "/portfolio/"
+const homeHref = base;
+const enHref = `${base}en/`;
+const jaHref = `${base}ja/`;
 ---
 <html lang={lang}>
   <head>
