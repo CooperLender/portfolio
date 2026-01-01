@@ -1,6 +1,14 @@
 ---
 import "../styles/global.css";
-const { title = "Portfolio", lang = "en", homeHref = "/", enHref = "/en/", jaHref = "/ja/" } = Astro.props;
+
+const base = import.meta.env.BASE_URL; // includes /portfolio/ on GitHub Pages
+const {
+  title = "Portfolio",
+  lang = "en",
+  homeHref = base,
+  enHref = `${base}en/`,
+  jaHref = `${base}ja/`,
+} = Astro.props;
 ---
 <html lang={lang}>
   <head>
