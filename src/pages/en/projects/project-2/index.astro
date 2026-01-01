@@ -1,43 +1,96 @@
 ---
-const base = import.meta.env.BASE_URL;
-const title = "Project 1 (Title)";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const title = "Project Title";
+const subtitle = "One-liner: what you built + why it matters (1 sentence)";
+
+const links = {
+  github: "https://github.com/CooperLender/REPO",
+  demo: "https://example.com", // optional
+};
+
+const overview = {
+  goal: "What problem you aimed to solve.",
+  built: "What you built (system/app/board/firmware/etc.).",
+  role: "What you personally owned / implemented.",
+  tech: "C/C++, Python, Verilog, KiCad, STM32, ROS2, etc.",
+};
+
+const results = [
+  "Result metric #1 (e.g., latency, accuracy, power, throughput)",
+  "Result metric #2 (e.g., passed tests, improved X by Y%)",
+];
+
+const decisions = [
+  "Decision #1 → why you chose it.",
+  "Decision #2 → why it mattered.",
+];
+
+const validation = [
+  "How you verified it worked (tests, scope captures, benchmarks).",
+  "Edge cases / failure modes you tested.",
+];
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{title} | Cooper Lender</title>
-  </head>
-  <body style="font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 16px;">
-    <header style="display:flex; justify-content:space-between; align-items:center;">
-      <a href={`${base}en/`}>&larr; Back</a>
-      <nav>
-        <a href={`${base}en/`} style="margin-right:12px;">EN</a>
-        <a href={`${base}ja/`}>日本語</a>
-      </nav>
-    </header>
 
-    <h1 style="margin-top:24px;">{title}</h1>
-    <p><strong>One-liner:</strong> What you built + why it matters.</p>
+<BaseLayout title={`${title} | Cooper Lender`} lang="en">
+  <a href="../../" class="muted">← Back</a>
 
+  <h1>{title}</h1>
+  <p class="muted">{subtitle}</p>
+
+  <div class="card">
     <h2>Overview</h2>
     <ul>
-      <li><strong>Goal:</strong></li>
-      <li><strong>What I built:</strong></li>
-      <li><strong>My role:</strong></li>
-      <li><strong>Tech:</strong></li>
-      <li><strong>Links:</strong> GitHub / Demo</li>
+      <li><strong>Goal:</strong> {overview.goal}</li>
+      <li><strong>What I built:</strong> {overview.built}</li>
+      <li><strong>My role:</strong> {overview.role}</li>
+      <li><strong>Tech:</strong> {overview.tech}</li>
+      <li>
+        <strong>Links:</strong>
+        <a href={links.github} target="_blank" rel="noreferrer">GitHub</a>
+        {links.demo ? (
+          <> / <a href={links.demo} target="_blank" rel="noreferrer">Demo</a></>
+        ) : null}
+      </li>
     </ul>
+  </div>
 
+  <div class="card">
     <h2>Architecture</h2>
-    <p>(Add a block diagram image later)</p>
+    <p class="muted">(Add a block diagram image here later)</p>
+    <ul>
+      <li>Component / stage 1</li>
+      <li>Component / stage 2</li>
+      <li>Data flow / control flow</li>
+    </ul>
+  </div>
 
+  <div class="card">
+    <h2>Key Engineering Decisions</h2>
+    <ul>
+      {decisions.map((d) => <li>{d}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
     <h2>Validation</h2>
-    <p>(How you proved it works)</p>
+    <ul>
+      {validation.map((v) => <li>{v}</li>)}
+    </ul>
+  </div>
 
+  <div class="card">
     <h2>Results</h2>
     <ul>
-      <li>Result / metric</li>
+      {results.map((r) => <li>{r}</li>)}
     </ul>
-  </body>
-</html>
+  </div>
+
+  <div class="card">
+    <h2>What I’d Improve Next</h2>
+    <ul>
+      <li>Next step #1 (shows maturity)</li>
+      <li>Next step #2</li>
+    </ul>
+  </div>
+</BaseLayout>
