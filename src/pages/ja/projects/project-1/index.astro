@@ -1,0 +1,43 @@
+---
+const base = import.meta.env.BASE_URL;
+const title = "プロジェクト1（タイトル）";
+---
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} | Cooper Lender</title>
+  </head>
+  <body style="font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 16px;">
+    <header style="display:flex; justify-content:space-between; align-items:center;">
+      <a href={`${base}ja/`}>&larr; 戻る</a>
+      <nav>
+        <a href={`${base}en/`} style="margin-right:12px;">EN</a>
+        <a href={`${base}ja/`}>日本語</a>
+      </nav>
+    </header>
+
+    <h1 style="margin-top:24px;">{title}</h1>
+    <p><strong>一言説明：</strong> 何を作ったか＋なぜ重要か。</p>
+
+    <h2>概要</h2>
+    <ul>
+      <li><strong>目的：</strong></li>
+      <li><strong>実装内容：</strong></li>
+      <li><strong>担当範囲：</strong></li>
+      <li><strong>使用技術：</strong></li>
+      <li><strong>リンク：</strong> GitHub / デモ</li>
+    </ul>
+
+    <h2>構成</h2>
+    <p>（後でブロック図を追加）</p>
+
+    <h2>検証</h2>
+    <p>（どう動作確認したか）</p>
+
+    <h2>結果</h2>
+    <ul>
+      <li>結果 / 指標</li>
+    </ul>
+  </body>
+</html>

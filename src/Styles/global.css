@@ -1,0 +1,29 @@
+:root{
+    --bg:#ffffff; --fg:#0f172a; --muted:#475569; --line:#e2e8f0;
+    --link:#2563eb; --card:#f8fafc;
+    --max: 920px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0b1220; --fg:#e5e7eb; --muted:#94a3b8; --line:#1f2937; --link:#60a5fa; --card:#0f172a; }
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  a{ color:var(--link); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  main{ max-width:var(--max); margin:48px auto; padding:0 18px; }
+  header{ display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line); }
+  nav a{ margin-left:12px; }
+  h1{ font-size:2rem; letter-spacing:-0.02em; margin:22px 0 10px; }
+  h2{ font-size:1.2rem; margin:28px 0 10px; }
+  p{ line-height:1.6; color:var(--fg); }
+  small, .muted{ color:var(--muted); }
+  ul{ line-height:1.7; }
+  .card{ border:1px solid var(--line); background:var(--card); border-radius:14px; padding:14px 16px; margin:12px 0; }
+  .badges span{ display:inline-block; border:1px solid var(--line); border-radius:999px; padding:4px 10px; margin:0 8px 8px 0; font-size:.85rem; color:var(--muted); }
+  
+  @media print{
+    :root{ --bg:#fff; --fg:#000; --muted:#333; --line:#ddd; --link:#000; --card:#fff; }
+    a{ text-decoration:underline; }
+    header{ border-bottom:1px solid #ddd; }
+  }
+  

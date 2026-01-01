@@ -1,0 +1,43 @@
+---
+const base = import.meta.env.BASE_URL;
+const title = "Project 1 (Title)";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} | Cooper Lender</title>
+  </head>
+  <body style="font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 16px;">
+    <header style="display:flex; justify-content:space-between; align-items:center;">
+      <a href={`${base}en/`}>&larr; Back</a>
+      <nav>
+        <a href={`${base}en/`} style="margin-right:12px;">EN</a>
+        <a href={`${base}ja/`}>日本語</a>
+      </nav>
+    </header>
+
+    <h1 style="margin-top:24px;">{title}</h1>
+    <p><strong>One-liner:</strong> What you built + why it matters.</p>
+
+    <h2>Overview</h2>
+    <ul>
+      <li><strong>Goal:</strong></li>
+      <li><strong>What I built:</strong></li>
+      <li><strong>My role:</strong></li>
+      <li><strong>Tech:</strong></li>
+      <li><strong>Links:</strong> GitHub / Demo</li>
+    </ul>
+
+    <h2>Architecture</h2>
+    <p>(Add a block diagram image later)</p>
+
+    <h2>Validation</h2>
+    <p>(How you proved it works)</p>
+
+    <h2>Results</h2>
+    <ul>
+      <li>Result / metric</li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+---
+import "../styles/global.css";
+const { title = "Portfolio", lang = "en", homeHref = "/", enHref = "/en/", jaHref = "/ja/" } = Astro.props;
+---
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <a href={homeHref}><strong>Cooper Lender</strong></a>
+        <nav>
+          <a href={enHref}>EN</a>
+          <a href={jaHref}>日本語</a>
+        </nav>
+      </header>
+      <slot />
+    </main>
+  </body>
+</html>

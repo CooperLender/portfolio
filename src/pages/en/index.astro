@@ -1,0 +1,34 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cooper Lender | Portfolio (EN)</title>
+  </head>
+  <body style="font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 16px;">
+    <header style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>Cooper Lender</strong>
+      <nav>
+        <a href={`${base}en/`} style="margin-right:12px;">EN</a>
+        <a href={`${base}ja/`}>日本語</a>
+      </nav>
+    </header>
+
+    <h1 style="margin-top:24px;">CS + EE Project Portfolio</h1>
+    <p>Stanford EE student. Interested in software + hardware systems (embedded, systems, robotics, etc.).</p>
+
+    <h2>Featured Projects</h2>
+    <ul>
+      <li><a href="./projects/project-1/">Project 1 (placeholder)</a></li>
+      <li><a href="./projects/project-2/">Project 2 (placeholder)</a></li>
+    </ul>
+
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://github.com/YOUR_GITHUB_USERNAME">GitHub</a></li>
+      <li><a href="mailto:YOUR_EMAIL">Email</a></li>
+    </ul>
+  </body>
+</html>
