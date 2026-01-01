@@ -1,34 +1,22 @@
 ---
-const base = import.meta.env.BASE_URL;
+import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cooper Lender | ポートフォリオ (JP)</title>
-  </head>
-  <body style="font-family: system-ui; max-width: 900px; margin: 40px auto; padding: 0 16px;">
-    <header style="display:flex; justify-content:space-between; align-items:center;">
-      <strong>Cooper Lender</strong>
-      <nav>
-        <a href={`${base}en/`} style="margin-right:12px;">EN</a>
-        <a href={`${base}ja/`}>日本語</a>
-      </nav>
-    </header>
+<BaseLayout title="Cooper Lender | ポートフォリオ" lang="ja">
+  <h1>CS・EE プロジェクト ポートフォリオ</h1>
+  <p class="muted">スタンフォード大学 EE 専攻。ソフトウェア×ハードウェア領域に興味があります。</p>
 
-    <h1 style="margin-top:24px;">CS・EE プロジェクト ポートフォリオ</h1>
-    <p>スタンフォード大学 EE 専攻。ソフトウェア×ハードウェア領域（組込み、システム、ロボティクス等）に興味があります。</p>
-
+  <div class="card">
     <h2>注目プロジェクト</h2>
     <ul>
-      <li><a href="./projects/project-1/">プロジェクト1（仮）</a></li>
-      <li><a href="./projects/project-2/">プロジェクト2（仮）</a></li>
+      <li><a href="./projects/project-1/">プロジェクト1</a></li>
+      <li><a href="./projects/project-2/">プロジェクト2</a></li>
     </ul>
+  </div>
 
-    <h2>リンク</h2>
-    <ul>
-      <li><a href="https://github.com/YOUR_GITHUB_USERNAME">GitHub</a></li>
-      <li><a href="mailto:YOUR_EMAIL">メール</a></li>
-    </ul>
-  </body>
-</html>
+  <div class="card">
+    <h2>スキル</h2>
+    <div class="badges">
+      <span>組込み</span><span>システム</span><span>C/C++</span><span>Python</span><span>FPGA</span>
+    </div>
+  </div>
+</BaseLayout>

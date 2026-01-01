@@ -1,11 +1,17 @@
 ---
 import "../styles/global.css";
-const { title = "Portfolio", lang = "en" } = Astro.props;
+import { profile } from "../data/profile.js";
 
-const base = import.meta.env.BASE_URL; // with trailingSlash:"always" => "/portfolio/"
-const homeHref = base;
-const enHref = `${base}en/`;
-const jaHref = `${base}ja/`;
+const base = import.meta.env.BASE_URL;
+
+const {
+  title = "Portfolio",
+  lang = "en",
+} = Astro.props;
+
+const t = lang === "ja"
+  ? { contact: "連絡先", email: "メール", github: "GitHub", linkedin: "LinkedIn" }
+  : { contact: "Contact", email: "Email", github: "GitHub", linkedin: "LinkedIn" };
 ---
 <html lang={lang}>
   <head>
@@ -16,13 +22,23 @@ const jaHref = `${base}ja/`;
   <body>
     <main>
       <header>
-        <a href={homeHref}><strong>Cooper Lender</strong></a>
+        <a href={base}><strong>{profile.name}</strong></a>
         <nav>
-          <a href={enHref}>EN</a>
-          <a href={jaHref}>日本語</a>
+          <a href={`${base}en/`}>EN</a>
+          <a href={`${base}ja/`}>日本語</a>
         </nav>
       </header>
+
       <slot />
+
+      <footer style="margin-top:32px; padding-top:16px; border-top:1px solid var(--line);">
+        <strong>{t.contact}</strong>
+        <ul style="padding-left:18px;">
+          <li><a href={`mailto:${profile.email}`}>{t.email}</a>: {profile.email}</li>
+          <li><a href={profile.github} target="_blank" rel="noreferrer">{t.github}</a></li>
+          <li><a href={profile.linkedin} target="_blank" rel="noreferrer">{t.linkedin}</a></li>
+        </ul>
+      </footer>
     </main>
   </body>
 </html>
