@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const title = "ジョイスティック操作の雨アニメーション（8×8 LEDマトリクス）";
+const subtitle =
+  "ジョイスティック入力で「重力方向」を切り替え、雨粒がリアルタイムに流れるインタラクティブなLEDアニメーション。";
+
+const overview = {
+  goal:
+    "ユーザー入力に即応する、直感的でインタラクティブな表示を実現する。",
+  built:
+    "8×8 LEDマトリクス上で雨粒をアニメーション表示。ジョイスティックを倒す方向に応じて重力方向が変わり、雨粒は反対側の端から生成されて移動する。",
+  role:
+    "私は主にハードウェア（LEDマトリクスとジョイスティックの配線、ピン割り当て確認、動作検証）を担当し、共同制作者が主にコード側を担当。トラブルシュートは協力して進めた。",
+  tech:
+    "組込み（Arduino/C系）、LEDマトリクスの多重化（走査表示）、アナログジョイスティック入力＋デッドゾーン、乱数生成、固定タイムステップ更新。",
+};
+
+const howItWorks = [
+  "表示状態を8×8の2次元配列として管理し、点灯LEDを保持する。",
+  "一定周期ごとに現在の方向へ1マスずつパターンをシフトして重力を表現する。",
+  "移動方向と逆側の端から雨粒をランダムに生成し、画面の端で自然に入れ替わるようにする。",
+  "ジョイスティックのアナログ値からUP/DOWN/LEFT/RIGHTを判定し、デッドゾーンで入力のブレを抑える。",
+  "落下中でも方向を切り替えられ、雨粒の進行方向が即座に変化する。",
+];
+
+const highlights = [
+  "ジョイスティック入力（閾値/デッドゾーン）で安定した操作感を実現。",
+  "雨粒生成をランダム化して、単調になりにくい見た目に。",
+  "行単位の走査（多重化）で8×8マトリクスを効率よく駆動。",
+];
+
+const results = [
+  "ジョイスティック操作に対して素早く表示方向が切り替わる。",
+  "雨粒が端で循環し、常に動きのある表示を維持できる。",
+];
+
+const assets = {
+  photo: "projects/rain-joystick/project.jpg",
+};
+---
+
+<BaseLayout title={`${title} | Cooper Lender`} lang="ja">
+  <a href="../../" class="muted">← 戻る</a>
+
+  <h1>{title}</h1>
+  <p class="muted">{subtitle}</p>
+
+  <div class="card">
+    <h2>概要</h2>
+    <ul>
+      <li><strong>目的：</strong> {overview.goal}</li>
+      <li><strong>実装内容：</strong> {overview.built}</li>
+      <li><strong>担当：</strong> {overview.role}</li>
+      <li><strong>使用技術：</strong> {overview.tech}</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>仕組み</h2>
+    <ul>
+      {howItWorks.map((x) => <li>{x}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>工夫点</h2>
+    <ul>
+      {highlights.map((x) => <li>{x}</li>)}
+    </ul>
+
+    <div class="muted" style="margin-top: 10px;">プロジェクト写真：</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.photo}`}
+      alt="ジョイスティック操作の雨アニメーション（8×8 LEDマトリクス）"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+  </div>
+
+  <div class="card">
+    <h2>結果</h2>
+    <ul>
+      {results.map((x) => <li>{x}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>今後の改善</h2>
+    <ul>
+      <li>明るさ制御や表示の最適化でフリッカを低減し、見た目を改善する。</li>
+      <li>雨量（生成頻度）や速度を可変にして表現の幅を広げる。</li>
+      <li>しぶき・残像などの演出を追加しつつ、フレーム時間を安定させる。</li>
+    </ul>
+  </div>
+</BaseLayout>

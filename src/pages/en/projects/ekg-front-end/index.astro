@@ -10,8 +10,6 @@ const overview = {
     "Condition a tiny, noisy EKG signal so it is readable and suitable for digitization (amplify useful content while removing DC offset and noise).",
   built:
     "A two-stage analog front-end: (1) an instrumentation amplifier stage for differential amplification, followed by (2) an op-amp active bandpass filter to remove DC offset and attenuate high-frequency / mains-coupled noise.",
-  role:
-    "Designed gain and corner frequencies, built the circuit on a breadboard, validated behavior using test signals, then measured a real heartbeat (Week 2).",
   tech:
     "Analog design, instrumentation amplifiers, active filters (op-amp), frequency response / Bode thinking, breadboarding + debugging, oscilloscope-style measurement.",
 };
@@ -25,7 +23,7 @@ const decisions = [
 const validation = [
   "Injected known test signals and observed output behavior across frequency to sanity-check bandpass performance.",
   "Tested DC offset rejection by adding a large offset to the input and confirming the output offset is strongly attenuated.",
-  "Week 2: measured a real heartbeat using electrodes and a small resistor network for safer, more stable acquisition.",
+  "Measured a real heartbeat using electrodes and a small resistor network for safer, more stable acquisition.",
 ];
 
 const results = [
@@ -51,7 +49,6 @@ const assets = {
     <ul>
       <li><strong>Goal:</strong> {overview.goal}</li>
       <li><strong>What I built:</strong> {overview.built}</li>
-      <li><strong>My role:</strong> {overview.role}</li>
       <li><strong>Tech:</strong> {overview.tech}</li>
     </ul>
   </div>

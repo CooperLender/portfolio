@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const title = "Joystick-Controlled Rain Animation on an 8×8 LED Matrix";
+const subtitle =
+  "An interactive LED animation where a joystick changes the direction of gravity and raindrops dynamically fall across the matrix.";
+
+const overview = {
+  goal:
+    "Create a responsive, interactive animation that reacts instantly to user input.",
+  built:
+    "A rain simulation on an 8×8 LED matrix where pushing the joystick changes the direction of gravity, causing raindrops to fall in that direction and spawn from the opposite edge.",
+  role:
+    "I led the hardware work (wiring the LED matrix and joystick, validating pin mappings and power/ground), while my teammate focused on the firmware logic. We debugged and refined the system together.",
+  tech:
+    "Arduino/C-style embedded code, LED matrix multiplexing, analog joystick input + deadzone, randomized spawning, state updates on a fixed timestep.",
+};
+
+const howItWorks = [
+  "The display is represented as an 8×8 grid (a 2D array) that stores which LEDs are ON.",
+  "Each timestep, the pattern shifts one cell in the current direction (simulating gravity).",
+  "New raindrops are randomly spawned at the starting edge opposite the direction of motion.",
+  "Joystick readings are mapped to UP/DOWN/LEFT/RIGHT with a deadzone to prevent jitter.",
+  "Direction can be changed while drops are in motion, so the falling direction updates immediately.",
+];
+
+const highlights = [
+  "Directional control via analog joystick input (with threshold/deadzone) for stable interaction.",
+  "Randomized raindrop spawning so the animation feels organic and non-repetitive.",
+  "Multiplexed LED scanning (row-by-row) to drive the 8×8 matrix efficiently.",
+];
+
+const results = [
+  "Interactive animation responds quickly to joystick direction changes.",
+  "Raindrops continuously recycle at the edges, keeping the display active and varied.",
+];
+
+const assets = {
+  photo: "projects/rain-joystick/project.jpg",
+};
+---
+
+<BaseLayout title={`${title} | Cooper Lender`} lang="en">
+  <a href="../../" class="muted">← Back</a>
+
+  <h1>{title}</h1>
+  <p class="muted">{subtitle}</p>
+
+  <div class="card">
+    <h2>Overview</h2>
+    <ul>
+      <li><strong>Goal:</strong> {overview.goal}</li>
+      <li><strong>What I built:</strong> {overview.built}</li>
+      <li><strong>My role:</strong> {overview.role}</li>
+      <li><strong>Tech:</strong> {overview.tech}</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>How It Works</h2>
+    <ul>
+      {howItWorks.map((x) => <li>{x}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Engineering Highlights</h2>
+    <ul>
+      {highlights.map((x) => <li>{x}</li>)}
+    </ul>
+
+    <div class="muted" style="margin-top: 10px;">Project photo:</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.photo}`}
+      alt="Joystick-controlled rain animation project"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+  </div>
+
+  <div class="card">
+    <h2>Results</h2>
+    <ul>
+      {results.map((x) => <li>{x}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What I’d Improve Next</h2>
+    <ul>
+      <li>Add brightness control / smoothing to reduce flicker and improve perceived motion.</li>
+      <li>Support variable “rain intensity” (spawn rate) and speed control.</li>
+      <li>Add additional effects (splashes, trails) while keeping frame time stable.</li>
+    </ul>
+  </div>
+</BaseLayout>
