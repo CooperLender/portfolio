@@ -1,0 +1,121 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const title = "EKG Analog Front-End (Instrumentation Amp + Active Bandpass Filter)";
+const subtitle =
+  "Built an analog signal-conditioning chain to amplify millivolt-level EKG signals, reject DC offset, and filter noise so the waveform is clean for measurement and digitization.";
+
+const overview = {
+  goal:
+    "Condition a tiny, noisy EKG signal so it is readable and suitable for digitization (amplify useful content while removing DC offset and noise).",
+  built:
+    "A two-stage analog front-end: (1) an instrumentation amplifier stage for differential amplification, followed by (2) an op-amp active bandpass filter to remove DC offset and attenuate high-frequency / mains-coupled noise.",
+  role:
+    "Designed gain and corner frequencies, built the circuit on a breadboard, validated behavior using test signals, then measured a real heartbeat (Week 2).",
+  tech:
+    "Analog design, instrumentation amplifiers, active filters (op-amp), frequency response / Bode thinking, breadboarding + debugging, oscilloscope-style measurement.",
+};
+
+const decisions = [
+  "Used an instrumentation amplifier first to reliably amplify a small differential signal before filtering.",
+  "Included a reference/bias strategy to avoid clipping and keep the signal within the usable output swing.",
+  "Chose a bandpass response to reject DC (baseline wander/offset) while preserving the heart-rate band and suppressing noise (including mains coupling).",
+];
+
+const validation = [
+  "Injected known test signals and observed output behavior across frequency to sanity-check bandpass performance.",
+  "Tested DC offset rejection by adding a large offset to the input and confirming the output offset is strongly attenuated.",
+  "Week 2: measured a real heartbeat using electrodes and a small resistor network for safer, more stable acquisition.",
+];
+
+const results = [
+  "Produced a cleaner EKG waveform by amplifying useful content while reducing DC offset and noise.",
+  "Captured both a controlled test-signal response and a recognizable real heartbeat waveform (images below).",
+];
+
+const assets = {
+  testSignal: "projects/ekg-front-end/test-signal.jpg",
+  heartbeat: "projects/ekg-front-end/heartbeat.jpg",
+  onPerson: "projects/ekg-front-end/on-person.jpg",
+};
+---
+
+<BaseLayout title={`${title} | Cooper Lender`} lang="en">
+  <a href="../../" class="muted">← Back</a>
+
+  <h1>{title}</h1>
+  <p class="muted">{subtitle}</p>
+
+  <div class="card">
+    <h2>Overview</h2>
+    <ul>
+      <li><strong>Goal:</strong> {overview.goal}</li>
+      <li><strong>What I built:</strong> {overview.built}</li>
+      <li><strong>My role:</strong> {overview.role}</li>
+      <li><strong>Tech:</strong> {overview.tech}</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Architecture</h2>
+    <ul>
+      <li>Electrodes (differential input) → instrumentation amplifier (gain + reference/bias)</li>
+      <li>Instrumentation amp output → active bandpass filter (remove DC, attenuate noise)</li>
+      <li>Filtered output → measurement and/or ADC digitization</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Validation</h2>
+    <ul>
+      {validation.map((v) => <li>{v}</li>)}
+    </ul>
+
+    <div class="muted" style="margin-top: 10px;">Test signal response:</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.testSignal}`}
+      alt="Test signal response"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+
+    <div class="muted" style="margin-top: 14px;">Measured heartbeat waveform:</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.heartbeat}`}
+      alt="Measured heartbeat waveform"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+
+    <div class="muted" style="margin-top: 14px;">On-person measurement setup:</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.onPerson}`}
+      alt="Device on-person measuring heartbeat"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+  </div>
+
+  <div class="card">
+    <h2>Key Engineering Decisions</h2>
+    <ul>
+      {decisions.map((d) => <li>{d}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Results</h2>
+    <ul>
+      {results.map((r) => <li>{r}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What I’d Improve Next</h2>
+    <ul>
+      <li>Add stronger safety + robustness features for real-world use (input protection / isolation considerations).</li>
+      <li>Refine the passband to preserve sharp QRS features while improving mains-noise rejection.</li>
+      <li>Move from breadboard to a small PCB for repeatability and lower noise pickup.</li>
+    </ul>
+  </div>
+</BaseLayout>
