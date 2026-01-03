@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const title = "無駄な箱（Useless Box）：物理制御とArduino人格";
+const subtitle =
+  "スイッチをONにすると指が出てきてOFFに戻す“Useless Box”。物理/ハード中心の制御と、Arduinoで挙動（人格）を作り込む制御を比較。";
+
+const overview = {
+  goal:
+    "ユーザーのトグル操作を検知し、モータで確実にスイッチを戻すメカトロ機構を作る。さらにソフト制御で体験（人格）がどう変わるかを実験する。",
+  built:
+    "小型ケース内にモータ駆動の“指”機構を実装。Aは物理/ハード中心の制御、BはArduinoで複数の挙動パターン（人格）を実装。",
+  role:
+    "チーム制作。私は配線・はんだ付け・スイッチの取り付け/位置合わせ・モータの正逆制御など、電装/メカ統合と信頼性デバッグを中心に担当し、Arduino側の挙動パターン実装・検証にも関わった。",
+  tech:
+    "メカトロ統合、リミットスイッチ、モータ方向制御、ArduinoデジタルIO（INPUT_PULLUP）、状態機械、バウンス/タイミング問題のデバッグ。",
+};
+
+const howItWorks2A = [
+  "ユーザーがトグルをON → モータが前進し、指が出てきてスイッチをOFFへ戻す。",
+  "戻した後、モータは後退して“ホーム位置”まで引き込み、リミットスイッチで停止する。",
+  "実機ではバウンスやタイミングの影響が出るため、安定動作するよう調整・デバッグした。",
+];
+
+const howItWorks2B = [
+  "Arduinoがトグルとリミットスイッチを読み取り、内部プルアップで入力を安定化する。",
+  "トグルONで前進→OFFに戻ったら後退→リミット到達で停止、という状態遷移で制御する。",
+  "待ち時間や動作速度を変えることで“人格（体験）”を作れる。",
+];
+
+const personalities = [
+  "基本：即反応してOFFに戻し、ホームで停止。",
+  "ランダム遅延：反応までの待ち時間をランダム化。",
+  "スロー/ためらい：途中で間を置く、ゆっくり動くなどで演出。",
+];
+
+const highlights = [
+  "同じ機構でも、物理制御とマイコン制御でユーザー体験が大きく変わる。",
+  "バウンスやエンドストップなど、現実の“クセ”を前提に安定動作へ詰めた。",
+  "小型ケース内での配線/はんだ/位置合わせまで含めて統合した。",
+];
+
+const assets = {
+  physical: "projects/useless-box/physical.jpg",
+  digital: "projects/useless-box/digital.jpg",
+  demo: "projects/useless-box/demo.mp4",
+};
+---
+
+<BaseLayout title={`${title} | Cooper Lender`} lang="ja">
+  <a href="../../" class="muted">← 戻る</a>
+
+  <h1>{title}</h1>
+  <p class="muted">{subtitle}</p>
+
+  <div class="card">
+    <h2>概要</h2>
+    <ul>
+      <li><strong>目的：</strong> {overview.goal}</li>
+      <li><strong>実装内容：</strong> {overview.built}</li>
+      <li><strong>担当：</strong> {overview.role}</li>
+      <li><strong>使用技術：</strong> {overview.tech}</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>バージョンA：物理/ハード中心</h2>
+    <ul>
+      {howItWorks2A.map((x) => <li>{x}</li>)}
+    </ul>
+
+    <div class="muted" style="margin-top: 10px;">物理版の写真：</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.physical}`}
+      alt="Useless Box 物理版"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+  </div>
+
+  <div class="card">
+    <h2>バージョンB：Arduino制御＋人格</h2>
+    <ul>
+      {howItWorks2B.map((x) => <li>{x}</li>)}
+    </ul>
+
+    <h3 style="margin-top:14px;">人格（挙動パターン）</h3>
+    <ul>
+      {personalities.map((x) => <li>{x}</li>)}
+    </ul>
+
+    <div class="muted" style="margin-top: 10px;">Arduino版の写真：</div>
+    <img
+      src={`${import.meta.env.BASE_URL}${assets.digital}`}
+      alt="Useless Box Arduino版"
+      loading="lazy"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    />
+
+    <div class="muted" style="margin-top: 14px;">デモ動画：</div>
+    <video
+      controls
+      preload="metadata"
+      style="width:100%; border-radius:12px; margin-top:10px;"
+    >
+      <source src={`${import.meta.env.BASE_URL}${assets.demo}`} type="video/mp4" />
+      このブラウザでは動画を再生できません。
+    </video>
+  </div>
+
+  <div class="card">
+    <h2>工夫点</h2>
+    <ul>
+      {highlights.map((x) => <li>{x}</li>)}
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>今後の改善</h2>
+    <ul>
+      <li>デバウンス（機械的/ソフト的）と状態遷移ガードを強化する。</li>
+      <li>電流検知やスタック検出でモータの安全性を上げる。</li>
+      <li>モータドライバ＋コネクタを基板化して堅牢性と再現性を上げる。</li>
+    </ul>
+  </div>
+</BaseLayout>
