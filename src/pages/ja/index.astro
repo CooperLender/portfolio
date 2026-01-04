@@ -1,24 +1,118 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SkillsSection from "../../components/SkillsSection.astro";
+
+// IMPORTANT: mailto は1つだけにする（2つ入れると壊れます）
+const email = "clender@stanford.edu";
+const emailAlt = "cooper.lender@gmail.com";
+
+const github = "https://github.com/CooperLender";
+const linkedin = "https://www.linkedin.com/in/cooper-lender-a78587336/";
+const resumePath = "resume.pdf";
+
+const projects = [
+  {
+    title: "EKG（心電図）アナログ・フロントエンド",
+    href: "./projects/ekg-front-end/",
+    desc: "mVレベルの心電図信号を、計装アンプ＋アクティブ帯域フィルタで整形し、テスト入力と実測で検証しました。",
+    tags: ["アナログ", "オペアンプ", "信号処理"],
+  },
+  {
+    title: "ジョイスティック操作の雨アニメ（8×8 LED）",
+    href: "./projects/rain-joystick/",
+    desc: "ジョイスティック入力で「重力方向」を切り替え、雨粒がリアルタイムに流れるインタラクティブなLEDアニメーションです。",
+    tags: ["組込み", "LEDマトリクス", "入力処理"],
+  },
+  {
+    title: "無駄な箱（物理制御 vs Arduino）",
+    href: "./projects/useless-box/",
+    desc: "スイッチを入れると指が出てきてスイッチを戻す装置。物理中心の制御と、Arduinoによる挙動（性格づけ）を比較しました。",
+    tags: ["メカトロ", "状態機械", "モータ制御"],
+  },
+];
 ---
+
 <BaseLayout title="Cooper Lender | ポートフォリオ" lang="ja">
-  <h1>CS・EE プロジェクト ポートフォリオ</h1>
-  <p class="muted">スタンフォード大学 EE 専攻。ソフトウェア×ハードウェア領域に興味があります。</p>
+  <section class="hero">
+    <h1>Cooper Lender</h1>
+    <p class="sub muted">スタンフォード大学 電気工学（EE）専攻。ソフトウェア×ハードウェアの統合に興味があります。</p>
 
-  <div class="card">
-    <h2>注目プロジェクト</h2>
-    <ul>
-      <li><a href="./projects/ekg-front-end/">EKG アナログ・フロントエンド</a></li>
-      <li><a href="./projects/rain-joystick/">Joystick Rain Animation (8×8 LED)</a></li>
-      <li><a href="./projects/useless-box/">無駄な箱（物理制御とArduino人格）</a></li>
-
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>スキル</h2>
-    <div class="badges">
-      <span>組込み</span><span>システム</span><span>C/C++</span><span>Python</span><span>FPGA</span>
+    <div class="hero-meta">
+      <span class="pill">組込み / ファームウェア</span>
+      <span class="pill">アナログ / 信号整形</span>
+      <span class="pill">メカトロニクス</span>
+      <span class="pill">HW–SW 統合</span>
     </div>
-  </div>
+
+    <div class="btn-row">
+      <a class="btn primary" href={`mailto:${email}`}>メール</a>
+      <a class="btn" href={github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href={`${import.meta.env.BASE_URL}${resumePath}`} target="_blank" rel="noopener">履歴書（PDF）</a>
+    </div>
+
+    <p class="muted" style="margin-top:14px;">
+      日本でのインターンを志望しています。組込み・回路・ソフトウェアが交差する領域で、「動くシステム」を作る仕事に惹かれています。
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>注目プロジェクト</h2>
+      <p class="muted">設計 → 実装 → 検証 → デバッグまで一通りやった成果をまとめています。</p>
+    </div>
+
+    <div class="project-grid">
+      {projects.map((p) => (
+        <a class="project-card" href={p.href}>
+          <div class="project-top">
+            <h3>{p.title}</h3>
+            <span class="project-arrow">→</span>
+          </div>
+          <p class="project-desc muted">{p.desc}</p>
+          <div class="tags">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <SkillsSection lang="ja" />
+
+  <section class="section card about">
+    <h2>自己紹介 / 興味</h2>
+
+    <p class="muted">
+      <strong>EE：</strong>
+      実際の信号や制約が効いてくる「ハード×ソフトのシステム」が特に好きです。アナログフロントエンドやセンサ周り、信号整形など、
+      回路からファームまで一気通貫でデバッグして“動くところまで持っていく”工程にやりがいを感じます。
+    </p>
+
+    <p class="muted" style="margin-top:12px;">
+      <strong>CS：</strong>
+      ソフトウェアでは、実用的なツールやインタラクティブな仕組みを作るのが好きです。可読性の高いコード、エッジケースの検証、
+      素早い反復を意識しつつ、タイミング・I/O・状態遷移（状態機械）のような「ハードに近いソフト」に特に興味があります。
+    </p>
+
+    <p class="muted" style="margin-top:12px;">
+      <strong>趣味：</strong>
+      コーヒーが好きで、抽出方法を試して改善するのが楽しいです。料理もよくして新しいレシピに挑戦します。
+      運動ではテニスやスキーが好きで、勉強の合間の良いリフレッシュになっています。
+    </p>
+  </section>
+
+  <section class="section card contact">
+    <h2>連絡先</h2>
+    <p class="muted">
+      ご連絡はメールが確実です：{email}（必要であれば {emailAlt} でも大丈夫です）。
+      GitHub / LinkedIn も随時見ています。
+    </p>
+    <div class="contact-row">
+      <a class="btn primary" href={`mailto:${email}`}>メール</a>
+      <a class="btn" href={github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href={`${import.meta.env.BASE_URL}${resumePath}`} target="_blank" rel="noopener">履歴書（PDF）</a>
+    </div>
+  </section>
 </BaseLayout>

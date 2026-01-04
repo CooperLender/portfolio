@@ -1,43 +1,43 @@
 ---
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 
-const title = "Useless Box: Physical Control vs Arduino “Personalities”";
+const title = "Useless Box: Hardware Control vs Arduino “Personalities”";
 const subtitle =
-  "Flip a switch ON and a finger pops out to turn it OFF—first implemented with purely physical/hardware control, then upgraded with Arduino-driven behaviors.";
+  "A classic box that turns itself off: flip the switch ON and a finger comes out to flip it back. Built first with hardware-focused control, then reworked with Arduino for behavior “personalities.”";
 
 const overview = {
   goal:
-    "Build a reliable electromechanical mechanism that detects a user toggle and actuates a motorized finger to reset it—then explore how firmware changes the experience.",
+    "Build a reliable electromechanical mechanism that detects the switch state and drives a motorized finger to flip it back—then explore how software changes the user experience.",
   built:
-    "A motor-driven finger mechanism inside a small enclosure. Version A uses hardware/physical logic (switches + motor drive). Version B uses an Arduino to implement multiple behavior ‘personalities’.",
+    "A small enclosure with a motor-driven finger. Version A uses hardware-focused logic and endstops; Version B uses Arduino state-machine control and multiple behavior patterns.",
   role:
-    "Team project. I focused on electromechanical integration (wiring/soldering, switch alignment, motor direction control, reliability debugging) and helped implement/test the Arduino behavior variants.",
+    "Team project. I focused on wiring/soldering, switch mounting + alignment, motor direction control, and reliability debugging. I also helped implement and tune Arduino behavior patterns.",
   tech:
-    "Electromechanical design, limit switches, motor direction control, Arduino digital IO (INPUT_PULLUP), simple state machines, debugging bounce/timing edge cases.",
+    "Mechatronics integration, limit switches, motor forward/reverse, Arduino digital I/O (INPUT_PULLUP), state machines, debouncing/timing debugging.",
 };
 
-const howItWorks2A = [
-  "User flips the toggle ON → motor drives forward and pushes a finger out to flip the toggle back OFF.",
-  "After flipping, the motor retracts until a limit switch indicates the finger is fully home, then the motor stops.",
-  "We debugged real-world issues like switch bounce and timing that can cause brief re-triggers.",
+const howItWorksA = [
+  "User flips the toggle ON → motor drives forward → finger reaches the switch and flips it OFF.",
+  "Then the motor reverses to retract the finger back to the home position.",
+  "A limit switch stops the motor at the home position for repeatable resets.",
 ];
 
-const howItWorks2B = [
-  "Arduino reads the toggle switch and a limit switch (using internal pullups for stable inputs).",
-  "When toggled ON, the motor drives forward; once the toggle is OFF, the motor reverses until the limit switch is hit, then stops.",
-  "Firmware enables multiple ‘personalities’ by changing timing, pauses, and response behavior.",
+const howItWorksB = [
+  "Arduino reads the toggle and limit switch (with internal pull-ups for stable inputs).",
+  "Control is implemented as a state machine: forward → flip OFF → reverse → stop at home.",
+  "Delays and speed changes create different “personalities” without changing the mechanism.",
 ];
 
 const personalities = [
-  "Basic: immediate reaction—flip OFF, retract to home, stop.",
-  "Random delay: waits a randomized time before reacting to feel more ‘alive’.",
-  "Slow/hesitant: introduces pauses/slow action to create personality.",
+  "Immediate: reacts quickly and resets cleanly.",
+  "Random delay: waits a random time before reacting.",
+  "Hesitation / slow: pauses mid-move or moves slowly for comedic effect.",
 ];
 
 const highlights = [
-  "Same mechanism, two control styles: hardware-only vs microcontroller (dramatically different UX).",
-  "Designed around reliability issues (bounce, endstops, alignment) to make the mechanism consistent.",
-  "Clean integration in a compact build: wiring, soldering, and mechanical alignment.",
+  "Same mechanism, different control approach → noticeably different user experience.",
+  "Tuned reliability around real-world issues (bounce, timing, endstop behavior).",
+  "Full integration: mechanical fit + wiring + control all within a small enclosure.",
 ];
 
 const assets = {
@@ -57,70 +57,66 @@ const assets = {
     <h2>Overview</h2>
     <ul>
       <li><strong>Goal:</strong> {overview.goal}</li>
-      <li><strong>What I built:</strong> {overview.built}</li>
+      <li><strong>Built:</strong> {overview.built}</li>
       <li><strong>My role:</strong> {overview.role}</li>
       <li><strong>Tech:</strong> {overview.tech}</li>
     </ul>
   </div>
 
   <div class="card">
-    <h2>Version A: Physical / hardware control</h2>
+    <h2>Version A: Hardware-focused control</h2>
     <ul>
-      {howItWorks2A.map((x) => <li>{x}</li>)}
+      {howItWorksA.map((x) => <li>{x}</li>)}
     </ul>
 
     <div class="muted" style="margin-top: 10px;">Physical version photo:</div>
     <img
       src={`${import.meta.env.BASE_URL}${assets.physical}`}
-      alt="Useless box physical control version"
+      alt="Useless Box physical version"
       loading="lazy"
       style="width:100%; border-radius:12px; margin-top:10px;"
     />
   </div>
 
   <div class="card">
-    <h2>Version B: Arduino control + personalities</h2>
+    <h2>Version B: Arduino control (“personalities”)</h2>
     <ul>
-      {howItWorks2B.map((x) => <li>{x}</li>)}
+      {howItWorksB.map((x) => <li>{x}</li>)}
     </ul>
 
-    <h3 style="margin-top:14px;">Personalities </h3>
+    <h3 style="margin-top:14px;">Behavior patterns</h3>
     <ul>
       {personalities.map((x) => <li>{x}</li>)}
     </ul>
 
-    <div class="muted" style="margin-top: 10px;">Arduino/digital version photo:</div>
+    <div class="muted" style="margin-top: 10px;">Arduino version photo:</div>
     <img
       src={`${import.meta.env.BASE_URL}${assets.digital}`}
-      alt="Useless box Arduino-controlled version"
+      alt="Useless Box Arduino version"
       loading="lazy"
       style="width:100%; border-radius:12px; margin-top:10px;"
     />
 
     <div class="muted" style="margin-top: 14px;">Demo video:</div>
-    <video
-      controls
-      preload="metadata"
-      style="width:100%; border-radius:12px; margin-top:10px;"
-    >
+    <video controls preload="metadata" style="width:100%; border-radius:12px; margin-top:10px;">
       <source src={`${import.meta.env.BASE_URL}${assets.demo}`} type="video/mp4" />
-      Sorry — your browser can’t play this video.
+      Your browser does not support the video tag.
     </video>
   </div>
 
   <div class="card">
-    <h2>Engineering Highlights</h2>
+    <h2>Highlights</h2>
     <ul>
       {highlights.map((x) => <li>{x}</li>)}
     </ul>
   </div>
 
   <div class="card">
-    <h2>What I’d Improve Next</h2>
+    <h2>Further improvements</h2>
     <ul>
-      <li>Add stronger debouncing (mechanical + software) and timing guards for cleaner state transitions.</li>
-      <li>Add current sensing / stall detection for safer motor endstop behavior.</li>
-      <li>Design a small PCB for the motor driver + connectors for robustness and repeatability.</li>
+      <li>Strengthen debouncing + state guards for even more robust behavior.</li>
+      <li>Add current sensing / stall detection to protect the motor.</li>
+      <li>Move wiring to a small PCB or harness for repeatability.</li>
     </ul>
   </div>
 </BaseLayout>

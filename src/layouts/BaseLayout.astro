@@ -1,18 +1,28 @@
 ---
 import "../styles/global.css";
-import { profile } from "../data/profile.js";
 
-const base = import.meta.env.BASE_URL;
+type Props = {
+  title?: string;
+  lang?: "en" | "ja";
+  homeHref?: string;
+  enHref?: string;
+  jaHref?: string;
+};
 
-const {
-  title = "Portfolio",
-  lang = "en",
-} = Astro.props;
+const base = import.meta.env.BASE_URL; // "/" in normal, "/portfolio/" for your GitHub Pages setup
+const withBase = (p: string) => `${base}${p.replace(/^\/+/, "")}`;
 
-const t = lang === "ja"
-  ? { contact: "連絡先", email: "メール", github: "GitHub", linkedin: "LinkedIn" }
-  : { contact: "Contact", email: "Email", github: "GitHub", linkedin: "LinkedIn" };
+const props = Astro.props as Props;
+
+const title = props.title ?? "Portfolio";
+const lang = props.lang ?? "en";
+
+// Default: clicking "Cooper Lender" goes to the current language home
+const homeHref = props.homeHref ?? withBase(lang === "ja" ? "ja/" : "en/");
+const enHref = props.enHref ?? withBase("en/");
+const jaHref = props.jaHref ?? withBase("ja/");
 ---
+
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
@@ -22,23 +32,21 @@ const t = lang === "ja"
   <body>
     <main>
       <header>
-        <a href={base}><strong>{profile.name}</strong></a>
-        <nav>
-          <a href={`${base}en/`}>EN</a>
-          <a href={`${base}ja/`}>日本語</a>
+        <a href={homeHref}><strong>Cooper Lender</strong></a>
+        <nav aria-label="Language switch">
+          <a class={lang === "en" ? "active" : ""} href={enHref}>EN</a>
+          <a class={lang === "ja" ? "active" : ""} href={jaHref}>日本語</a>
         </nav>
       </header>
 
       <slot />
-
-      <footer style="margin-top:32px; padding-top:16px; border-top:1px solid var(--line);">
-        <strong>{t.contact}</strong>
-        <ul style="padding-left:18px;">
-          <li><a href={`mailto:${profile.email}`}>{t.email}</a>: {profile.email}</li>
-          <li><a href={profile.github} target="_blank" rel="noreferrer">{t.github}</a></li>
-          <li><a href={profile.linkedin} target="_blank" rel="noreferrer">{t.linkedin}</a></li>
-        </ul>
-      </footer>
     </main>
+
+    <style is:global>
+      nav a.active {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    </style>
   </body>
 </html>

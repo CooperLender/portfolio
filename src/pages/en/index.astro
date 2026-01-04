@@ -1,24 +1,114 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SkillsSection from "../../components/SkillsSection.astro";
+
+const email = "clender@stanford.edu";
+const emailAlt = "cooper.lender@gmail.com";
+const github = "https://github.com/CooperLender";
+const linkedin = "https://www.linkedin.com/in/cooper-lender-a78587336/";
+const resumePath = "resume.pdf";
+
+const projects = [
+  {
+    title: "EKG Analog Front-End",
+    href: "./projects/ekg-front-end/",
+    desc: "Designed an instrumentation amplifier + active bandpass filter to clean mV-level EKG signals; validated with test inputs and measured heartbeat.",
+    tags: ["Analog", "Op-Amps", "Signal Processing"],
+  },
+  {
+    title: "Joystick Rain Animation (8×8 LED)",
+    href: "./projects/rain-joystick/",
+    desc: "Interactive LED rain simulation where joystick input changes gravity direction in real time (deadzone + multiplexed scanning).",
+    tags: ["Embedded", "LED Matrix", "Input Systems"],
+  },
+  {
+    title: "Useless Box (Physical vs Arduino)",
+    href: "./projects/useless-box/",
+    desc: "Electromechanical ‘anti-user’ box that flips its own switch off; compared hardware-only logic vs Arduino personalities (with demo video).",
+    tags: ["Mechatronics", "State Machines", "Motor Control"],
+  },
+];
 ---
+
 <BaseLayout title="Cooper Lender | Portfolio (EN)" lang="en">
-  <h1>CS + EE Project Portfolio</h1>
-  <p class="muted">Stanford EE student. Interested in software + hardware systems.</p>
+  <section class="hero">
+    <h1>Cooper Lender</h1>
+    <p class="sub muted">Stanford EE student focused on software + hardware systems.</p>
 
-  <div class="card">
-    <h2>Featured Projects</h2>
-    <ul>
-      <li><a href="./projects/ekg-front-end/">EKG Analog Front-End</a></li>
-      <li><a href="./projects/rain-joystick/">Joystick Rain Animation (8×8 LED)</a></li>
-      <li><a href="./projects/useless-box/">Useless Box (Physical vs Arduino Personalities)</a></li>
-
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>Skills</h2>
-    <div class="badges">
-      <span>Embedded</span><span>Systems</span><span>C/C++</span><span>Python</span><span>FPGA</span>
+    <div class="hero-meta">
+      <span class="pill">Embedded + Firmware</span>
+      <span class="pill">Analog / Signal Conditioning</span>
+      <span class="pill">Mechatronics</span>
+      <span class="pill">Hardware–Software Integration</span>
     </div>
-  </div>
+
+    <div class="btn-row">
+      <a class="btn primary" href={`mailto:${email}`}>Email</a>
+      <a class="btn" href={github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href={`${import.meta.env.BASE_URL}${resumePath}`} target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+
+    <p class="muted" style="margin-top:14px;">
+      I’m applying for internships in Japan and looking for roles at the intersection of embedded systems,
+      electronics, and software.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Featured Projects</h2>
+      <p class="muted">A few hands-on builds that show how I design and debug systems.</p>
+    </div>
+
+    <div class="project-grid">
+      {projects.map((p) => (
+        <a class="project-card" href={p.href}>
+          <div class="project-top">
+            <h3>{p.title}</h3>
+            <span class="project-arrow">→</span>
+          </div>
+          <p class="project-desc muted">{p.desc}</p>
+          <div class="tags">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <SkillsSection lang="en" />
+
+  <section class="section card about">
+    <h2>About / Interests</h2>
+  
+    <p class="muted">
+      <strong>EE:</strong> I’m most excited by hardware–software systems where real signals and real constraints
+      matter—analog front-ends, sensing, and debugging the full chain from circuit behavior to firmware.
+      I especially like signal conditioning and making “messy” data usable.
+    </p>
+  
+    <p class="muted" style="margin-top:12px;">
+      <strong>CS:</strong> On the software side, I enjoy building practical tools and interactive systems.
+      I like writing clean code, testing edge cases, and iterating quickly—especially when software is tightly
+      coupled to hardware behavior (timing, IO, and state machines).
+    </p>
+  
+    <p class="muted" style="margin-top:12px;">
+      <strong>Hobbies:</strong> Outside school I’m a coffee enthusiast, and I love cooking and trying new recipes.
+      I also stay active with tennis and skiing—good balance from engineering and a great way to reset.
+    </p>
+  </section>
+  
+
+  <section class="section card contact">
+    <h2>Contact</h2>
+    <p class="muted">Best way to reach me: email. I’m also active on GitHub and LinkedIn.</p>
+    <div class="contact-row">
+      <a class="btn primary" href={`mailto:${email}`}>Email</a>
+      <a class="btn" href={github} target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href={`${import.meta.env.BASE_URL}${resumePath}`} target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+  </section>
 </BaseLayout>

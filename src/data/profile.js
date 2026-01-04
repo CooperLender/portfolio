@@ -1,7 +1,7 @@
 export const profile = {
     name: "Cooper Lender",
-    email: "YOUR_EMAIL_HERE",
-    github: "https://github.com/CooperLender",   // change if you prefer TheQuartzLord
-    linkedin: "https://www.linkedin.com/in/YOUR_LINKEDIN",
+    email: "clender@stanford.edu / cooper.lender@gmail.com",
+    github: "https://github.com/CooperLender",  
+    linkedin: "https://www.linkedin.com/in/cooper-lender-a78587336/",
   };
   

@@ -1,0 +1,124 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const {
+  title = "Project",
+  subtitle = "",
+  lang = "en",
+  backHref = "../../",
+  tags = [],
+} = Astro.props;
+
+const t = (en: string, ja: string) => (lang === "ja" ? ja : en);
+
+---
+
+<BaseLayout title={title} lang={lang}>
+  <div class="project-v1">
+    <a class="proj-back muted" href={backHref}>
+      {t("← Back", "← 戻る")}
+    </a>
+
+    <header class="proj-head">
+      <h1 class="proj-title">{title}</h1>
+      {subtitle && <p class="proj-sub muted">{subtitle}</p>}
+
+      {tags?.length > 0 && (
+        <div class="proj-tags" aria-label={t("Project tags", "プロジェクトのタグ")}>
+          {tags.map((x: string) => (
+            <span class="proj-tag">{x}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="proj-body">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .project-v1 .proj-back{
+    display:inline-block;
+    margin-top: 6px;
+  }
+
+  .project-v1 .proj-head{
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  .project-v1 .proj-title{
+    margin: 10px 0 6px;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .project-v1 .proj-sub{
+    margin: 0;
+    max-width: 70ch;
+  }
+
+  .project-v1 .proj-tags{
+    margin-top: 10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .project-v1 .proj-tag{
+    display:inline-flex;
+    align-items:center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: .9rem;
+    line-height: 1;
+    background: rgba(0,0,0,.06);
+    border: 1px solid rgba(0,0,0,.10);
+    color: var(--muted);
+    cursor: default;
+    user-select:none;
+  }
+
+  @media (prefers-color-scheme: dark){
+    .project-v1 .proj-tag{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.14);
+      color: var(--muted);
+    }
+  }
+
+  /* Make cards breathe a little more on project pages */
+  .project-v1 .proj-body .card{
+    margin: 14px 0;
+    padding: 16px 16px;
+    border-radius: 16px;
+  }
+
+  /* Optional media grid helper (use it if you want) */
+  .project-v1 .media-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .project-v1 .media{
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    background: var(--card);
+  }
+  .project-v1 .media img,
+  .project-v1 .media video{
+    display:block;
+    width: 100%;
+    height:auto;
+  }
+  .project-v1 .caption{
+    padding: 10px 12px;
+    font-size: .92rem;
+    color: var(--muted);
+  }
+</style>

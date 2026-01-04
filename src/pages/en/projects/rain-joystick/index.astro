@@ -1,38 +1,38 @@
 ---
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 
-const title = "Joystick-Controlled Rain Animation on an 8×8 LED Matrix";
+const title = "Joystick-Controlled Rain Animation (8×8 LED Matrix)";
 const subtitle =
-  "An interactive LED animation where a joystick changes the direction of gravity and raindrops dynamically fall across the matrix.";
+  "An interactive LED animation where joystick input changes the fall direction (“gravity”) in real time.";
 
 const overview = {
   goal:
-    "Create a responsive, interactive animation that reacts instantly to user input.",
+    "Build a responsive, interactive LED display that feels intuitive to control.",
   built:
-    "A rain simulation on an 8×8 LED matrix where pushing the joystick changes the direction of gravity, causing raindrops to fall in that direction and spawn from the opposite edge.",
+    "A rain animation on an 8×8 LED matrix. The joystick changes the fall direction; new raindrops spawn on the opposite edge to keep the motion continuous.",
   role:
-    "I led the hardware work (wiring the LED matrix and joystick, validating pin mappings and power/ground), while my teammate focused on the firmware logic. We debugged and refined the system together.",
+    "Team project. I focused on hardware integration (wiring the LED matrix + joystick, confirming pin mapping, troubleshooting display issues) and helped tune the update loop and input stability.",
   tech:
-    "Arduino/C-style embedded code, LED matrix multiplexing, analog joystick input + deadzone, randomized spawning, state updates on a fixed timestep.",
+    "Arduino (C/C++), LED matrix row-scanning (multiplexing), analog joystick input + deadzone, randomness, fixed-timestep state updates.",
 };
 
 const howItWorks = [
-  "The display is represented as an 8×8 grid (a 2D array) that stores which LEDs are ON.",
-  "Each timestep, the pattern shifts one cell in the current direction (simulating gravity).",
-  "New raindrops are randomly spawned at the starting edge opposite the direction of motion.",
-  "Joystick readings are mapped to UP/DOWN/LEFT/RIGHT with a deadzone to prevent jitter.",
-  "Direction can be changed while drops are in motion, so the falling direction updates immediately.",
+  "Represent the display as an 8×8 buffer (grid state).",
+  "On a fixed timestep, shift the pattern one cell in the current fall direction to simulate “gravity.”",
+  "Spawn raindrops along the edge opposite the movement direction to keep the animation populated.",
+  "Convert joystick analog values into UP/DOWN/LEFT/RIGHT, using a deadzone to avoid jitter near center.",
+  "Direction can change while raindrops are falling, so the flow responds immediately.",
 ];
 
 const highlights = [
-  "Directional control via analog joystick input (with threshold/deadzone) for stable interaction.",
-  "Randomized raindrop spawning so the animation feels organic and non-repetitive.",
-  "Multiplexed LED scanning (row-by-row) to drive the 8×8 matrix efficiently.",
+  "Deadzone + thresholds for stable, pleasant control.",
+  "Randomized raindrop spawning to avoid repetitive patterns.",
+  "Efficient row-scanning (multiplexing) to drive the 8×8 matrix cleanly.",
 ];
 
 const results = [
-  "Interactive animation responds quickly to joystick direction changes.",
-  "Raindrops continuously recycle at the edges, keeping the display active and varied.",
+  "Joystick direction switches the fall direction quickly and predictably.",
+  "Raindrops loop across edges so the animation stays lively and continuous.",
 ];
 
 const assets = {
@@ -50,21 +50,21 @@ const assets = {
     <h2>Overview</h2>
     <ul>
       <li><strong>Goal:</strong> {overview.goal}</li>
-      <li><strong>What I built:</strong> {overview.built}</li>
+      <li><strong>Built:</strong> {overview.built}</li>
       <li><strong>My role:</strong> {overview.role}</li>
       <li><strong>Tech:</strong> {overview.tech}</li>
     </ul>
   </div>
 
   <div class="card">
-    <h2>How It Works</h2>
+    <h2>How it works</h2>
     <ul>
       {howItWorks.map((x) => <li>{x}</li>)}
     </ul>
   </div>
 
   <div class="card">
-    <h2>Engineering Highlights</h2>
+    <h2>Highlights</h2>
     <ul>
       {highlights.map((x) => <li>{x}</li>)}
     </ul>
@@ -72,7 +72,7 @@ const assets = {
     <div class="muted" style="margin-top: 10px;">Project photo:</div>
     <img
       src={`${import.meta.env.BASE_URL}${assets.photo}`}
-      alt="Joystick-controlled rain animation project"
+      alt="Joystick-controlled rain animation on an 8×8 LED matrix"
       loading="lazy"
       style="width:100%; border-radius:12px; margin-top:10px;"
     />
@@ -86,11 +86,11 @@ const assets = {
   </div>
 
   <div class="card">
-    <h2>What I’d Improve Next</h2>
+    <h2>Further improvements</h2>
     <ul>
-      <li>Add brightness control / smoothing to reduce flicker and improve perceived motion.</li>
-      <li>Support variable “rain intensity” (spawn rate) and speed control.</li>
-      <li>Add additional effects (splashes, trails) while keeping frame time stable.</li>
+      <li>Reduce flicker further by tuning scan timing / brightness control.</li>
+      <li>Add adjustable rain speed and density for more variety.</li>
+      <li>Add small effects (splashes / trails) while keeping frame timing stable.</li>
     </ul>
   </div>
 </BaseLayout>

@@ -1,0 +1,398 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+type IconKey = "chip" | "tools" | "team" | "calendar";
+
+type MetaItem = {
+  label: string;
+  value: string;
+  icon?: IconKey;
+};
+
+type Props = {
+  title?: string;
+  subtitle?: string;
+  lang?: "en" | "ja";
+  backHref?: string;
+  tags?: string[];
+  meta?: MetaItem[];
+};
+
+const {
+  title = "Project",
+  subtitle = "",
+  lang = "en",
+  backHref = "../../",
+  tags = [],
+  meta = [],
+} = Astro.props as Props;
+
+const t = (en: string, ja: string) => (lang === "ja" ? ja : en);
+
+const ICONS: Record<IconKey, string> = {
+  chip: `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M9 3v2H7a2 2 0 0 0-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2V7h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9zm10 6v10H7V7h12v2z"/>
+    </svg>
+  `,
+  tools: `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M14.7 6.3a5 5 0 0 0-6.5 6.5L3 18v3h3l5.2-5.2a5 5 0 0 0 6.5-6.5l-3 3-2-2 3-3z"/>
+    </svg>
+  `,
+  team: `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M16 11a4 4 0 1 0-3.2-6.4A4 4 0 0 0 16 11zM8 11a4 4 0 1 0-3.2-6.4A4 4 0 0 0 8 11zm0 2c-3 0-6 1.5-6 4v2h12v-2c0-2.5-3-4-6-4zm8 0c-.6 0-1.2.1-1.8.2 1.8.9 2.8 2.1 2.8 3.8v2h6v-2c0-2.5-3-4-6-4z"/>
+    </svg>
+  `,
+  calendar: `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2zm15 8H2v10h20V10z"/>
+    </svg>
+  `,
+};
+
+const getIcon = (key?: IconKey): string => ICONS[key ?? "tools"];
+---
+
+
+<BaseLayout title={title} lang={lang}>
+  <div class="project-v2">
+    <a class="proj-back muted" href={backHref}>
+      <span class="back-arrow">←</span> {t("Back", "戻る")}
+    </a>
+
+    <header class="proj-head">
+      <h1 class="proj-title">{title}</h1>
+      {subtitle && <p class="proj-sub muted">{subtitle}</p>}
+
+      {tags?.length > 0 && (
+        <div class="proj-tags" aria-label={t("Project tags", "プロジェクトのタグ")}>
+          {tags.map((x: string) => (
+            <span class="proj-tag">{x}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="proj-grid">
+      <article class="proj-content">
+        <div class="proj-body">
+          <slot />
+        </div>
+      </article>
+
+      <aside class="proj-aside" aria-label={t("Project sidebar", "プロジェクトのサイドバー")}>
+        {meta?.length > 0 && (
+          <div class="aside-card card">
+            <h3 class="aside-title">{t("At a glance", "概要")}</h3>
+            <ul class="meta-list">
+                {meta.map((m: MetaItem) => (
+                <li class="meta-item">
+                  <span class="meta-ico" set:html={getIcon(m.icon)} />
+                  <div class="meta-text">
+                    <div class="meta-label">{m.label}</div>
+                    <div class="meta-value">{m.value}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="aside-card card toc-card">
+          <h3 class="aside-title">{t("On this page", "このページ")}</h3>
+          <ul class="toc" data-toc></ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+(() => {
+  const root = document.querySelector(".project-v2");
+  if (!root) return;
+
+  // Build TOC from H2s in the project content
+  const toc = root.querySelector("[data-toc]");
+  const tocCard = root.querySelector(".toc-card");
+  const headings = Array.from(root.querySelectorAll(".proj-content h2"));
+
+  const slugify = (s) =>
+    (s || "")
+      .toLowerCase()
+      .trim()
+      .replace(/['"]/g, "")
+      .replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9faf\s-]/g, "") // keep JP chars
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+  if (!headings.length) {
+    tocCard?.remove();
+  } else {
+    const used = new Set();
+    headings.forEach((h) => {
+      let id = h.id || slugify(h.textContent);
+      if (!id) id = "section";
+      let candidate = id;
+      let i = 2;
+      while (used.has(candidate) || document.getElementById(candidate)) {
+        candidate = `${id}-${i++}`;
+      }
+      used.add(candidate);
+      h.id = candidate;
+
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = `#${candidate}`;
+      a.textContent = h.textContent || "Section";
+      li.appendChild(a);
+      toc.appendChild(li);
+    });
+  }
+
+  // Scroll reveal for cards (respects reduced motion)
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
+
+  const cards = Array.from(root.querySelectorAll(".proj-content .card"));
+  cards.forEach((c) => c.classList.add("reveal"));
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  cards.forEach((c) => io.observe(c));
+})();
+</script>
+
+<style is:global>
+  .project-v2 .proj-back{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    margin-top: 6px;
+    text-decoration:none;
+  }
+  .project-v2 .proj-back:hover .back-arrow{
+    transform: translateX(-2px);
+  }
+  .project-v2 .back-arrow{
+    transition: transform 140ms ease;
+  }
+
+  .project-v2 .proj-head{
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  .project-v2 .proj-title{
+    margin: 10px 0 6px;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .project-v2 .proj-sub{
+    margin: 0;
+    max-width: 72ch;
+  }
+
+  .project-v2 .proj-tags{
+    margin-top: 10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .project-v2 .proj-tag{
+    display:inline-flex;
+    align-items:center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: .9rem;
+    line-height: 1;
+    background: rgba(0,0,0,.06);
+    border: 1px solid rgba(0,0,0,.10);
+    color: var(--muted);
+    cursor: default;
+    user-select:none;
+  }
+
+  @media (prefers-color-scheme: dark){
+    .project-v2 .proj-tag{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.14);
+      color: var(--muted);
+    }
+  }
+
+  .project-v2 .proj-grid{
+    display:grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+    align-items:start;
+  }
+
+  .project-v2 .proj-aside{
+    position: sticky;
+    top: 18px;
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+
+  .project-v2 .aside-title{
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .project-v2 .aside-card.card{
+    border-radius: 16px;
+    padding: 14px 14px;
+  }
+
+  .project-v2 .meta-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+
+  .project-v2 .meta-item{
+    display:flex;
+    gap: 10px;
+    align-items:flex-start;
+  }
+
+  .project-v2 .meta-ico{
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    opacity: .7;
+  }
+
+  .project-v2 .meta-ico svg{
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .project-v2 .meta-label{
+    font-size: .82rem;
+    color: var(--muted);
+    line-height: 1.2;
+  }
+
+  .project-v2 .meta-value{
+    font-size: .95rem;
+    line-height: 1.35;
+  }
+
+  .project-v2 .toc{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap: 8px;
+  }
+
+  .project-v2 .toc a{
+    color: var(--fg);
+    text-decoration:none;
+    font-size: .92rem;
+    line-height: 1.25;
+    opacity: .85;
+  }
+
+  .project-v2 .toc a:hover{
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* Cards inside the project body */
+  .project-v2 .proj-body .card{
+    margin: 14px 0;
+    padding: 16px 16px;
+    border-radius: 16px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  /* Gentle, non-flashy hover (desktop) */
+  @media (hover:hover){
+    .project-v2 .proj-body .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(0,0,0,.12);
+      background: rgba(0,0,0,.025);
+    }
+    @media (prefers-color-scheme: dark){
+      .project-v2 .proj-body .card:hover{
+        border-color: rgba(255,255,255,.16);
+        background: rgba(255,255,255,.05);
+      }
+    }
+  }
+
+  /* Reveal */
+  .project-v2 .proj-body .card.reveal{
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .project-v2 .proj-body .card.reveal.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 260ms ease, transform 260ms ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .project-v2 .proj-body .card.reveal{
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Media helpers */
+  .project-v2 .media-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .project-v2 .media{
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    background: var(--card);
+  }
+  .project-v2 .media img,
+  .project-v2 .media video{
+    display:block;
+    width: 100%;
+    height:auto;
+  }
+  .project-v2 .caption{
+    padding: 10px 12px;
+    font-size: .92rem;
+    color: var(--muted);
+  }
+
+  /* Responsive: stack sidebar below content */
+  @media (max-width: 920px){
+    .project-v2 .proj-grid{
+      grid-template-columns: 1fr;
+    }
+    .project-v2 .proj-aside{
+      position: static;
+    }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+const { lang = "en" } = Astro.props;
+
+const content = {
+  en: {
+    title: "Skills",
+    groups: [
+      {
+        label: "Programming",
+        chips: ["C++", "Python", "JavaScript", "Java", "HTML", "CSS", "Jinja", "p5.js"],
+      },
+      {
+        label: "Embedded & Firmware",
+        chips: [
+          "Arduino",
+          "Digital I/O",
+          "Analog input + thresholds",
+          "State machines",
+          "Timing (millis)",
+          "Serial debugging",
+        ],
+      },
+      {
+        label: "EE / Analog",
+        chips: [
+          "Instrumentation amplifiers",
+          "Op-amp active filters",
+          "Bandpass filtering",
+          "Signal conditioning",
+          "Frequency response (Bode)",
+          "Oscilloscope + signal generator (AD2)",
+        ],
+      },
+      {
+        label: "Electromechanical",
+        chips: [
+          "DC motor control (FWD/REV/STOP)",
+          "Limit switches",
+          "Debouncing / bounce analysis",
+          "Mechanism alignment",
+          "Wiring + soldering",
+        ],
+      },
+      {
+        label: "Data & Product",
+        chips: ["Analytics tooling", "Golden dataset curation", "Customer-facing communication"],
+      },
+      {
+        label: "Languages",
+        chips: ["English (Native)", "Japanese (Fluent)", "Spanish (Proficient)"],
+      },
+    ],
+  },
+
+  ja: {
+    title: "スキル",
+    groups: [
+      {
+        label: "プログラミング",
+        chips: ["C++", "Python", "JavaScript", "Java", "HTML", "CSS", "Jinja", "p5.js"],
+      },
+      {
+        label: "組込み・ファーム",
+        chips: ["Arduino", "デジタルI/O", "アナログ入力＋閾値", "状態機械", "タイミング制御（millis）", "シリアルデバッグ"],
+      },
+      {
+        label: "EE / アナログ回路",
+        chips: ["計装アンプ", "オペアンプ（アクティブフィルタ）", "バンドパス", "信号調整", "周波数特性（ボード線図）", "オシロ＋信号源（AD2）"],
+      },
+      {
+        label: "メカトロ",
+        chips: ["DCモータ制御（正転/逆転/停止）", "リミットスイッチ", "デバウンス／バウンス解析", "機構の位置合わせ", "配線・はんだ付け"],
+      },
+      {
+        label: "データ / プロダクト",
+        chips: ["行動分析ツール", "ゴールデンデータセット作成", "顧客対応・コミュニケーション"],
+      },
+      {
+        label: "言語",
+        chips: ["英語（母語）", "日本語（流暢）", "スペイン語（上級）"],
+      },
+    ],
+  },
+};
+
+const c = lang === "ja" ? content.ja : content.en;
+---
+
+<section class="section" data-skills>
+  <h2>{c.title}</h2>
+
+  <div class="skills-grid">
+    {c.groups.map((g) => (
+      <div class="card">
+        <h3>{g.label}</h3>
+        <div class="chips">
+          {g.chips.map((chip) => <span class="chip">{chip}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+<script is:inline>
+    // Random micro-nudge on hover (keeps chips feeling non-clickable but alive)
+    const root = document.querySelector('[data-skills]');
+    if (root) {
+      const chips = root.querySelectorAll('.chip');
+  
+      const rand = (min, max) => Math.random() * (max - min) + min;
+  
+      chips.forEach((chip) => {
+        chip.addEventListener('mouseenter', () => {
+          // small movement so it doesn't feel like a button
+          const dx = rand(-4, 4).toFixed(1);
+          const dy = rand(-3, 3).toFixed(1);
+          const rot = rand(-2.5, 2.5).toFixed(2);
+  
+          chip.style.setProperty('--chip-dx', `${dx}px`);
+          chip.style.setProperty('--chip-dy', `${dy}px`);
+          chip.style.setProperty('--chip-rot', `${rot}deg`);
+        });
+  
+        chip.addEventListener('mouseleave', () => {
+          chip.style.setProperty('--chip-dx', `0px`);
+          chip.style.setProperty('--chip-dy', `0px`);
+          chip.style.setProperty('--chip-rot', `0deg`);
+        });
+      });
+    }
+  </script>
+  
