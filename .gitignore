@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# claude local config
+.claude/
+
+# backup of iCloud-damaged git dir
+.git-icloud-broken-backup/

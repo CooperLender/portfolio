@@ -1,5 +1,5 @@
 ---
-const { lang = "en" } = Astro.props;
+const { lang = "en", figNo = "", title = "" } = Astro.props;
 
 const content = {
   en: {
@@ -34,7 +34,7 @@ const content = {
       {
         label: "Electromechanical",
         chips: [
-          "DC motor control (FWD/REV/STOP)",
+          "DC motor control",
           "Limit switches",
           "Debouncing / bounce analysis",
           "Mechanism alignment",
@@ -69,7 +69,7 @@ const content = {
       },
       {
         label: "メカトロ",
-        chips: ["DCモータ制御（正転/逆転/停止）", "リミットスイッチ", "デバウンス／バウンス解析", "機構の位置合わせ", "配線・はんだ付け"],
+        chips: ["DCモータ制御", "リミットスイッチ", "デバウンス／バウンス解析", "機構の位置合わせ", "配線・はんだ付け"],
       },
       {
         label: "データ / プロダクト",
@@ -86,8 +86,11 @@ const content = {
 const c = lang === "ja" ? content.ja : content.en;
 ---
 
-<section class="section" data-skills>
-  <h2>{c.title}</h2>
+<section class="section" data-skills id="skills">
+  <div class="section-head">
+    {figNo && <span class="fig-no">{figNo}</span>}
+    <h2>{title || c.title}</h2>
+  </div>
 
   <div class="skills-grid">
     {c.groups.map((g) => (
