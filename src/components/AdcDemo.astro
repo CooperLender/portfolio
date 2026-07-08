@@ -390,7 +390,8 @@ const labels = {
     const bits = parseInt(bitsInput.value, 10);
     fsReadout.textContent = `fs = ${fsRatio.toFixed(1)} × f`;
     bitsReadout.textContent = `N = ${bits} bit · ${Math.pow(2, bits)} levels`;
-    aliasWarn.hidden = fsRatio >= 2;
+    // Nyquist is a strict inequality: fs must exceed 2f, equality is not enough
+    aliasWarn.hidden = fsRatio > 2;
 
     const comps = Math.pow(2, bits) - 1;
     const power = comps * fsRatio;
